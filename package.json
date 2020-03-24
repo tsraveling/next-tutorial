@@ -1,0 +1,27 @@
+{
+  "name": "next-tutorial",
+  "version": "1.0.0",
+  "description": "Next.js tutorial project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsraveling/next-tutorial.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tsraveling/next-tutorial/issues"
+  },
+  "homepage": "https://github.com/tsraveling/next-tutorial#readme",
+  "dependencies": {
+    "next": "^9.3.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
