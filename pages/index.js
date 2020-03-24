@@ -1,31 +1,43 @@
-import Layout from '../components/Layout';
-import Link from 'next/link';
-import fetch from 'isomorphic-unfetch';
+import useSWR from 'swr';
 
-const Index = props => (
-    <Layout>
-        <h1>Batman TV Shows</h1>
-        <ul>
-            {props.shows.map(show => (
-                <li key={show.id}>
-                    <Link href="/posts/[id]" as={`/posts/${show.id}`}>
-                        <a>{show.name}</a>
-                    </Link>
-                </li>
-            ))}
-        </ul>
-    </Layout>
-);
+function fetcher(url) {
+    return fetch(url).then(r => r.json());
+}
 
-Index.getInitialProps = async function() {
-    const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
-    const data = await res.json();
+export default function Index() {
+    const { data, error } = useSWR('/api/randomQuote', fetcher);
+    // The following line has optional chaining, added in Next.js v9.1.5,
+    // is the same as `data && data.author`
+    const author = data?.author;
+    let quote = data?.quote;
 
-    console.log(`Show data fetched. Count: ${data.length}`);
+    if (!data) quote = 'Loading...';
+    if (error) quote = 'Failed to fetch the quote.';
 
-    return {
-        shows: data.map(entry => entry.show)
-    };
-};
+    return (
+        <main className="center">
+            <div className="quote">{quote}</div>
+            {author && <span className="author">- {author}</span>}
 
-export default Index;
+            <style jsx>{`
+                main {
+                  width: 90%;
+                  max-width: 900px;
+                  margin: 300px auto;
+                  text-align: center;
+                }
+                .quote {
+                  font-family: cursive;
+                  color: #e243de;
+                  font-size: 24px;
+                  padding-bottom: 10px;
+                }
+                .author {
+                  font-family: sans-serif;
+                  color: #559834;
+                  font-size: 20px;
+                }
+            `}</style>
+        </main>
+    );
+}
